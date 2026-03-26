@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Commentaire;
 
-class Commentaire
+class CommentaireDTO
 {
     public $id_commentaire;
     public $date_commentaire;
