@@ -20,6 +20,28 @@ $path = parse_url($requestUri, PHP_URL_PATH);
 $path = str_replace('/api/', '', $path);
 $path = trim($path, '/');
 
+// Importation de l'utilitaire JWT
+require_once __DIR__ . '/utils/JWT.php';
+
+// VERIFICATION DU TOKEN JWT OBLIGATOIRE (Sauf si exception)
+$headers = getallheaders();
+$authHeader = $headers['Authorization'] ?? '';
+
+if (strpos($authHeader, 'Bearer ') !== 0) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Accès refusé. Jeton d\'authentification (Token) manquant.']);
+    exit;
+}
+
+$token = substr($authHeader, 7);
+$decoded = \App\Utils\JWT::decode($token);
+
+if (!$decoded) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Accès refusé. Jeton d\'authentification (Token) invalide ou expiré.']);
+    exit;
+}
+
 // Récupération des données JSON envoyées
 $inputJSON = file_get_contents('php://input');
 $inputData = json_decode($inputJSON, TRUE) ?? [];
