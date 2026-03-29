@@ -3,12 +3,11 @@
 // Variables d'environnement pour le Backend
 
 // -- BASE DE DONNÉES (AlwaysData) --
-// À remplir avec tes identifiants AlwaysData avant le déploiement !
-define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'PHP_Rugby');
-define('DB_USER', 'root');
-define('DB_PASSWORD', '');
+define('DB_HOST', 'mysql-back.alwaysdata.net');
+define('DB_NAME', 'back'); // Habituellement sur AlwaysData, le nom de la BDD est le même que le user par défaut
+define('DB_USER', 'back');
+define('DB_PASSWORD', '!UBq69!G2rel');
 
-// Optionnel: Clé secrète JWT si elle doit être redéfinie globalement
-define('JWT_SECRET', 'MON_SUPER_SECRET_POUR_LE_PROJET_R401_WxyZ123!_Rugby');
+// Clé secrète JWT
+define('JWT_SECRET', 'M_PIQUE_EST_TRES_BEAU');
 ?>
