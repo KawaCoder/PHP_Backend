@@ -1,6 +1,4 @@
-DROP DATABASE IF EXISTS PHP_Rugby;
-CREATE DATABASE PHP_Rugby;
-USE PHP_Rugby;
+USE back_db;
 
 CREATE TABLE joueur(
    id_joueur INT AUTO_INCREMENT,
