@@ -15,7 +15,6 @@ require_once __DIR__ . '/Autoloader.php';
 
 // Récupération de l'URL
 $requestUri = $_SERVER['REQUEST_URI'];
-// Nettoyage de l'URL (si on appelle localhost:8000/api/...)
 $path = parse_url($requestUri, PHP_URL_PATH);
 $path = str_replace('/api/', '', $path);
 $path = trim($path, '/');
@@ -23,13 +22,14 @@ $path = trim($path, '/');
 // Importation de l'utilitaire JWT
 require_once __DIR__ . '/utils/JWT.php';
 
-// VERIFICATION DU TOKEN JWT OBLIGATOIRE (Sauf si exception)
+// --- LOGIQUE DE VÉRIFICATION DU TOKEN ---
+// Le Backend ne sait pas QUI est l'utilisateur, il vérifie juste si le jeton est VALIDE.
 $headers = getallheaders();
-$authHeader = $headers['Authorization'] ?? '';
+$authHeader = $headers['Authorization'] ?? $headers['authorization'] ?? '';
 
 if (strpos($authHeader, 'Bearer ') !== 0) {
     http_response_code(401);
-    echo json_encode(['error' => 'Accès refusé. Jeton d\'authentification (Token) manquant.']);
+    echo json_encode(['error' => "Accès refusé. Jeton d'authentification (Token) manquant."]);
     exit;
 }
 
@@ -38,15 +38,16 @@ $decoded = \App\Utils\JWT::decode($token);
 
 if (!$decoded) {
     http_response_code(401);
-    echo json_encode(['error' => 'Accès refusé. Jeton d\'authentification (Token) invalide ou expiré.']);
+    echo json_encode(['error' => "Accès refusé. Jeton d'authentification (Token) invalide ou expiré."]);
     exit;
 }
+// ----------------------------------------
 
 // Récupération des données JSON envoyées
 $inputJSON = file_get_contents('php://input');
 $inputData = json_decode($inputJSON, TRUE) ?? [];
 
-// Récupération des données GET (pour les id passés dans l'URL)
+// Récupération des données GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $inputData = array_merge($inputData, $_GET);
 }
@@ -54,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 try {
     $controller = null;
 
-    // --- ROUTEUR INTELLIGENT ---
     switch ($path) {
         // JOUEUR
         case 'create_joueur':
@@ -191,3 +191,4 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
+?>
