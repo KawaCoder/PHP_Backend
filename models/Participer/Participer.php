@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Participer;
 
-class Participer {
+class Participer implements \JsonSerializable {
     private $id_joueur;
     private $id_match;
     private $poste;
@@ -24,6 +24,10 @@ class Participer {
             'est_titulaire' => $this->est_titulaire,
             'evaluation' => $this->evaluation
         ];
+    }
+
+    public function jsonSerialize(): mixed {
+        return $this->toArray();
     }
 
     public function getId_Joueur() {

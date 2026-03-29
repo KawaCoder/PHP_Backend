@@ -2,7 +2,7 @@
 
 namespace App\Models\Joueur;
 
-class Joueur
+class Joueur implements \JsonSerializable
 {
     private $id_joueur;
     private $nom_joueur;
@@ -113,5 +113,20 @@ class Joueur
     public function getNomComplet()
     {
         return $this->prenom_joueur . ' ' . $this->nom_joueur;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id_joueur' => $this->id_joueur,
+            'nom_joueur' => $this->nom_joueur,
+            'prenom_joueur' => $this->prenom_joueur,
+            'numero_licence' => $this->numero_licence,
+            'date_naiss' => $this->date_naiss,
+            'taille' => $this->taille,
+            'poids' => $this->poids,
+            'statut_joueur' => $this->statut_joueur,
+            'commentaire' => $this->commentaire
+        ];
     }
 }

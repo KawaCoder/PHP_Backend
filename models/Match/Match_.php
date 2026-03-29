@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Match;
 
-class Match_ {
+class Match_ implements \JsonSerializable {
 
     private $id_match;
     private $date_match;
@@ -78,6 +78,10 @@ class Match_ {
 
     public function getSens_match() {
         return $this->sens_match;
+    }
+
+    public function jsonSerialize(): mixed {
+        return $this->toArray();
     }
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\Commentaire;
 
-class Commentaire
+class Commentaire implements \JsonSerializable
 {
     private $id_commentaire;
     private $date_commentaire;
@@ -21,6 +21,16 @@ class Commentaire
                 $this->$method($value);
             }
         }
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id_commentaire' => $this->id_commentaire,
+            'date_commentaire' => $this->date_commentaire,
+            'commentaire' => $this->commentaire,
+            'id_joueur' => $this->id_joueur
+        ];
     }
 
     public function getIdCommentaire()
