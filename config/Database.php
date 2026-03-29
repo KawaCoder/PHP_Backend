@@ -29,10 +29,12 @@ class Database
     {
         if (self::$pdo === null) {
             try {
-                $server = '127.0.0.1';
-                $db = 'PHP_Rugby';
-                $login = 'root';
-                $mdp = '';
+                require_once __DIR__ . '/env.php';
+                
+                $server = DB_HOST;
+                $db = DB_NAME;
+                $login = DB_USER;
+                $mdp = DB_PASSWORD;
 
                 self::$pdo = new PDO("mysql:host=$server;dbname=$db;charset=utf8", $login, $mdp);
                 self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
